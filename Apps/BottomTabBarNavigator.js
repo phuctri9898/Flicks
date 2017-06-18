@@ -22,8 +22,8 @@ export default class BottomTabBarNavigator extends PureComponent<void, *, State>
   state: State = {
     index: 0,
     routes: [
-      { key: '1', title: 'Now Playing', icon: './image/movie_icon.png' },
-      { key: '2', title: 'Top Rated', icon: './image/star_icon.png' }
+      { key: '1', title: 'Now Playing', icon: 'https://cdn3.iconfinder.com/data/icons/multimedia/100/play_movie_3-256.png' },
+      { key: '2', title: 'Top Rated', icon: 'https://cdn3.iconfinder.com/data/icons/vote/16/medal_star_rank-128.png' }
     ],
   };
 
@@ -54,7 +54,7 @@ export default class BottomTabBarNavigator extends PureComponent<void, *, State>
 
   _renderIcon = ({ route }) => {
     return <Image
-      source={require('./image/movie_icon.png')}
+      source={{uri: route.icon}}
       size={24}
       style={tabBarStyles.icon} />;
   };

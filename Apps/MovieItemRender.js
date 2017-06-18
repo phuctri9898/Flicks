@@ -42,10 +42,10 @@ export default class MovieItemRender extends View {
     return (
       <View style={{width:width, height:118, flexDirection:'row'}}>
           <Image
-            style={{width:75, height:106, marginLeft:10}}
+            style={{width:75, height:106, marginLeft:10, marginTop:5}}
             source={{uri: url}}>
           </Image>
-          <View style={{width:width - 95, height:118, flexDirection:'column', marginLeft:10}}>
+          <View style={{width:width - 95, height:118, flexDirection:'column', marginLeft:10, marginTop:5}}>
             <Text
               style={styles.title}
               ellipsizeMode='tail'

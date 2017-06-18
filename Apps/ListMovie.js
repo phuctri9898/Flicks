@@ -6,11 +6,12 @@ import {
   View,
   ListView,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from 'react-native';
 
 import MovieItemRender from './MovieItemRender.js'
-
+const width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   list: {
       flexDirection: 'column',
@@ -21,7 +22,11 @@ const styles = StyleSheet.create({
       margin: 3,
       width: 150,
       height: 150
-  }
+  },
+  separator:{
+    width:width,
+    height:1,
+    backgroundColor:'white'}
 });
 
 export default class ListMovie extends Component {
@@ -40,11 +45,18 @@ export default class ListMovie extends Component {
       <ListView contentContainerStyle={styles.list}
         dataSource={this.state.dataSource}
         renderRow={(rowData) => this.itemRender(rowData)}
+        renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => this.renderSeparator(sectionID, rowID, adjacentRowHighlighted)}
         enableEmptySections={true}
       />
     );
   }
 
+  renderSeparator(sectionID, rowID, adjacentRowHighlighted){
+    return (
+      <View style={styles.separator}
+      key={rowID}/>
+    );
+  }
   itemRender (rowData){
     return (
       <TouchableHighlight onPress={() => {
@@ -70,7 +82,7 @@ export default class ListMovie extends Component {
       .then((responseJson) => {
         this.setState(
           {
-            dataProvider: responseJson.results,
+            fullListData: responseJson.results,
             dataSource: this.state.dataSource.cloneWithRows(responseJson.results)
           }
         )
@@ -86,25 +98,27 @@ export default class ListMovie extends Component {
     var arrFilter;
     if(text == null || text.empty)
     {
-      arrFilter = this.state.dataProvider;
+      arrFilter = this.state.fullListData.slice(0);
     }
     else {
       arrFilter=[];
       var item;
       var title;
-      var desc
-      for(i=0; i< this.state.dataProvider.length; i++)
+      var desc;
+      console.log("fullListData:"+this.state.fullListData.length);
+      for(i=0; i < this.state.fullListData.length; i++)
       {
-        item = this.state.dataProvider[i];
+        item = this.state.fullListData[i];
         title = item.title.toLowerCase();
         desc = item.overview.toLowerCase();
-        if(title.search(text.toLowerCase()) !== -1 || desc.search(text.toLowerCase()) !== -1){
+        if(title.search(text.toLowerCase()) > -1 || desc.search(text.toLowerCase()) > -1){
+          console.log("match item:"+i);
           arrFilter.push(item);
         }
       }
+
     }
-
-
+    console.log("arrFilter:"+arrFilter.length);
     this.setState(
       {
         dataSource: this.state.dataSource.cloneWithRows(arrFilter)

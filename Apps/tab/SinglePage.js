@@ -37,13 +37,14 @@ export default class SinglePage extends Component {
     return (
       <View>
         <TextInput
+        style={{backgroundColor:'white'}}
         onChangeText={text => this.searchTextChange(text)}
         placeholder='search'
         placeholderTextColor='gray'
         inlineImageLeft='../image/search_icon.png'
         inlineImagePadding={20}/>
 
-        <ListMovie
+        <ListMovie style={{backgroundColor:'orange'}}
           dataProvider={params}
           itemClickHandler={this.itemClickHandler}
           ref={(view) => {this.listMovie = view;} }/>
