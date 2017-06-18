@@ -26,11 +26,10 @@ const styles = StyleSheet.create({
 export default class SinglePage extends Component {
   constructor(props) {
     super(props);
-    console.log("SinglePage");
-    console.log(props.dataProvider);
     this.state = {
       apiLink:props.dataProvider.apiLink
     };
+    this.itemClickHandler = this.itemClickHandler.bind(this);
   }
 
   render() {
@@ -41,15 +40,27 @@ export default class SinglePage extends Component {
         onChangeText={text => this.searchTextChange(text)}
         placeholder='search'
         placeholderTextColor='gray'
-        inlineImageLeft='./image/search_icon.png'/>
+        inlineImageLeft='../image/search_icon.png'
+        inlineImagePadding={20}/>
 
-        <ListMovie dataProvider={params}/>
+        <ListMovie
+          dataProvider={params}
+          itemClickHandler={this.itemClickHandler}
+          ref={(view) => {this.listMovie = view;} }/>
       </View>
     );
   }
 
+  itemClickHandler(itemData){
+    console.log("SinglePage itemClickHandler:"+this.props.itemClickHandler);
+    this.props.itemClickHandler(itemData);
+  }
+
   searchTextChange(text)
   {
-
+    if(this.listMovie)
+    {
+      this.listMovie.searchTextChange(text);
+    }
   }
 }

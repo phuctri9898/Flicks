@@ -28,18 +28,17 @@ const styles = StyleSheet.create({
     height:70
   },
 });
-export default class MovieItemRender extends Component {
+export default class MovieItemRender extends View {
   constructor(props) {
     super(props);
     this.state = {
       dataProvider: props.dataProvider
     };
   }
-  prefix = 'https://image.tmdb.org/t/p/w45';
+  prefix = 'https://image.tmdb.org/t/p/w342';
   render() {
     let url = this.prefix+this.state.dataProvider.poster_path;
     var {height, width} = Dimensions.get('window');
-    console.log("window:"+height+", "+width);
     return (
       <View style={{width:width, height:118, flexDirection:'row'}}>
           <Image

@@ -27,6 +27,11 @@ export default class BottomTabBarNavigator extends PureComponent<void, *, State>
     ],
   };
 
+  constructor(props) {
+    super(props);
+    this.itemClickHandler = this.itemClickHandler.bind(this);
+  }
+
   _handleChangeTab = index => {
     this.setState({
       index,
@@ -90,12 +95,10 @@ export default class BottomTabBarNavigator extends PureComponent<void, *, State>
     switch (route.key) {
       case '1':
         var params = {apiLink:apis[0]};
-        console.log("tabbar");
-        console.log(params);
         return (
           <SinglePage
             dataProvider={params}
-            state={this.state}
+            itemClickHandler={this.itemClickHandler}
             style={{ backgroundColor: '#ff4081' }}
           />
         );
@@ -104,7 +107,7 @@ export default class BottomTabBarNavigator extends PureComponent<void, *, State>
         return (
           <SinglePage
             dataProvider={params}
-            state={this.state}
+            itemClickHandler={this.itemClickHandler}
             style={{ backgroundColor: '#673ab7' }}
           />
         );
@@ -124,6 +127,12 @@ export default class BottomTabBarNavigator extends PureComponent<void, *, State>
       />
     );
   }
+
+  itemClickHandler(itemData){
+    console.log("TabBar itemClickHandler");
+    this.props.itemClickHandler(itemData);
+  }
+
 }
 
 const tabBarStyles = StyleSheet.create({

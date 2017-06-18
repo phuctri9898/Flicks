@@ -9,15 +9,36 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Navigator
 } from 'react-native';
 
-import BottomTabBarNavigator from './Apps/BottomTabBarNavigator.js';
+import ListPage from './Apps/ListPage.js';
+import DetailPage from './Apps/DetailPage.js';
 
 export default class Flicks extends Component {
   render() {
     return (
-      <BottomTabBarNavigator />
+      <Navigator
+        
+
+        initialRoute={{id: 'ListPage', title: 'DetailPage'}}
+        renderScene={(route, navigator) => {
+          switch (route.id) {
+            case 'ListPage':
+              return (
+                <ListPage navigator={navigator} {... route.props}/>
+              );
+              break;
+            case 'DetailPage':
+              return (
+                <DetailPage navigator={navigator} {... route.props}/>
+              );
+              break;
+            default:
+          }
+        }}
+    />
     );
   }
 }
