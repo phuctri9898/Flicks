@@ -1,12 +1,11 @@
 /* @flow */
 
 import React, { PureComponent } from 'react';
-import { Animated, View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Animated, View, Text, StyleSheet, Image } from 'react-native';
 import { TabViewAnimated, TabBar } from 'react-native-tab-view';
-import SimplePage from './SimplePage';
-
 import type { NavigationState } from 'react-native-tab-view/types';
+
+import SinglePage from './tab/SinglePage.js';
 
 type Route = {
   key: string,
@@ -16,16 +15,15 @@ type Route = {
 
 type State = NavigationState<Route>;
 
-export default class TopBarIconExample extends PureComponent<void, *, State> {
+export default class BottomTabBarNavigator extends PureComponent<void, *, State> {
   static title = 'Bottom bar with indicator';
   static appbarElevation = 4;
 
   state: State = {
     index: 0,
     routes: [
-      { key: '1', title: 'First', icon: 'ios-speedometer' },
-      { key: '2', title: 'Second', icon: 'ios-game-controller-b' },
-      { key: '3', title: 'Third', icon: 'ios-basketball' },
+      { key: '1', title: 'Now Playing', icon: './image/movie_icon.png' },
+      { key: '2', title: 'Top Rated', icon: './image/star_icon.png' }
     ],
   };
 
@@ -50,26 +48,32 @@ export default class TopBarIconExample extends PureComponent<void, *, State> {
   };
 
   _renderIcon = ({ route }) => {
-    return <Ionicons name={route.icon} size={24} style={styles.icon} />;
+    return <Image
+      source={require('./image/movie_icon.png')}
+      size={24}
+      style={tabBarStyles.icon} />;
   };
 
-  _renderBadge = ({ route }) => {
-    if (route.key === '2') {
-      return (
-        <View style={styles.badge}>
-          <Text style={styles.count}>42</Text>
-        </View>
-      );
-    }
-    return null;
+  _renderLabel = ({ route }) => {
+    return <Text style={tabBarStyles.label}>{route.title}</Text>;
   };
+  // _renderBadge = ({ route }) => {
+  //   if (route.key === '2') {
+  //     return (
+  //       <View style={styles.badge}>
+  //         <Text style={styles.count}>42</Text>
+  //       </View>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   _renderFooter = props => {
     return (
       <TabBar
         {...props}
         renderIcon={this._renderIcon}
-        renderBadge={this._renderBadge}
+        renderLabel={this._renderLabel}
         renderIndicator={this._renderIndicator}
         style={styles.tabbar}
         tabStyle={styles.tab}
@@ -77,27 +81,31 @@ export default class TopBarIconExample extends PureComponent<void, *, State> {
     );
   };
 
+
+
   _renderScene = ({ route }) => {
+    const apis=["https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed",
+                "https://api.themoviedb.org/3/movie/top_rated?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
+
     switch (route.key) {
       case '1':
+        var params = {apiLink:apis[0]};
+        console.log("tabbar");
+        console.log(params);
         return (
-          <SimplePage
+          <SinglePage
+            dataProvider={params}
             state={this.state}
             style={{ backgroundColor: '#ff4081' }}
           />
         );
       case '2':
+        var params = {apiLink:apis[1]}
         return (
-          <SimplePage
+          <SinglePage
+            dataProvider={params}
             state={this.state}
             style={{ backgroundColor: '#673ab7' }}
-          />
-        );
-      case '3':
-        return (
-          <SimplePage
-            state={this.state}
-            style={{ backgroundColor: '#4caf50' }}
           />
         );
       default:
@@ -118,6 +126,16 @@ export default class TopBarIconExample extends PureComponent<void, *, State> {
   }
 }
 
+const tabBarStyles = StyleSheet.create({
+  label: {
+    fontSize:10
+  },
+  icon: {
+    backgroundColor: 'transparent',
+    width: 32,
+    height: 32,
+  }
+});
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -128,10 +146,7 @@ const styles = StyleSheet.create({
   tab: {
     padding: 0,
   },
-  icon: {
-    backgroundColor: 'transparent',
-    color: 'white',
-  },
+
   indicator: {
     flex: 1,
     backgroundColor: '#0084ff',

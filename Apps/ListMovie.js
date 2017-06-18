@@ -27,8 +27,12 @@ export default class ListMovie extends Component {
   constructor(props) {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    console.log("ListMovie");
+    console.log(props.dataProvider);
     this.state = {
+      apiLink:props.dataProvider.apiLink,
       dataSource: ds.cloneWithRows([])
+
     };
   }
 
@@ -53,7 +57,7 @@ export default class ListMovie extends Component {
   }
 
   getMoviesFromApiAsync() {
-    return fetch('https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed')
+    return fetch(this.state.apiLink)
       .then((response) => response.json())
       .then((responseJson) => {
         console.log("load API done");

@@ -12,12 +12,12 @@ import {
   View
 } from 'react-native';
 
-import ListMovie from './Apps/ListMovie.js';
+import BottomTabBarNavigator from './Apps/BottomTabBarNavigator.js';
 
 export default class Flicks extends Component {
   render() {
     return (
-      <ListMovie />
+      <BottomTabBarNavigator />
     );
   }
 }
