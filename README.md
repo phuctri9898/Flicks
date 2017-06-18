@@ -5,8 +5,10 @@
 Time spent: **10** hours spent in total
 
 ## require install
-install react-native-tab-view for Android
+
 `yarn add react-native-tab-view`
+
+## User Stories
 
 The following **required** functionality is completed:
 
